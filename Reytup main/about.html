@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haqqımızda — ReytUp</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .timeline { position: relative; max-width: 600px; margin: 40px auto; padding-left: 30px; }
+        .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--green); }
+        .timeline-step { position: relative; margin-bottom: 40px; }
+        .timeline-step::before { content: ''; position: absolute; left: -34px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--green); border: 4px solid var(--bg); box-shadow: 0 0 0 2px var(--green); }
+    </style>
+</head>
+<body>
+
+    <div id="nav-container"></div>
+
+    <main class="container" style="max-width: 800px; padding: 80px 24px;">
+        <header class="text-center" style="margin-bottom: 60px;">
+            <h1 class="h1">Məlumatla idarə olunan gələcək</h1>
+            <p class="muted" style="margin-top: 24px; font-size: 18px;">
+                ReytUp olaraq hədəfimiz sahibkarların yer seçimindəki risklərini minimuma endirməkdir.<br>
+                Biz süni intellekt və real məkan datasını birləşdirərək ən doğru qərarları verməyə kömək edirik.
+            </p>
+        </header>
+
+        <div class="grid grid-2 gap-24 flex-mobile-stack" style="grid-template-columns: 1fr 1fr; margin-bottom: 60px;">
+            <div class="card" style="border-left: 3px solid var(--green);">
+                <div style="color: var(--green); font-size: 11px; letter-spacing: 0.1em; font-weight: 700; margin-bottom: 12px;">MİSSİYAMIZ</div>
+                <p class="muted" style="font-size: 14px;">
+                    Sahibkarların ən böyük problemi olan "yanlış yer seçimi"ni dataya əsaslanan analizlərlə aradan qaldırmaq və bizneslərin uğur ehtimalını artırmaq.
+                </p>
+            </div>
+            <div class="card" style="border-left: 3px solid var(--green);">
+                <div style="color: var(--green); font-size: 11px; letter-spacing: 0.1em; font-weight: 700; margin-bottom: 12px;">VİZYONUMUZ</div>
+                <p class="muted" style="font-size: 14px;">
+                    Regionun ən böyük və ən dəqiq biznes-geolokasiya analiz platformasına çevrilərək hər bir yeni biznesin "sağ əli" olmaq.
+                </p>
+            </div>
+        </div>
+
+        <section>
+            <h2 class="h2 text-center">Analiz Prosesi</h2>
+            <div class="timeline">
+                <div class="timeline-step">
+                    <h3 style="font-size: 16px; color: white; margin-bottom: 8px;">1. İstifadəçi Məlumat Daxil Edir</h3>
+                    <p class="muted" style="font-size: 14px;">Biznes növü, ünvan və maliyyə hədəfləri sistemə daxil edilir.</p>
+                </div>
+                <div class="timeline-step">
+                    <h3 style="font-size: 16px; color: white; margin-bottom: 8px;">2. AI Məlumatları Analiz Edir</h3>
+                    <p class="muted" style="font-size: 14px;">Gemini AI modeli ərazidəki rəqabəti, trafiki və potensialı emal edir.</p>
+                </div>
+                <div class="timeline-step">
+                    <h3 style="font-size: 16px; color: white; margin-bottom: 8px;">3. Reyting Hesablanır</h3>
+                    <p class="muted" style="font-size: 14px;">Məkanın bütün üstünlük və riskləri 100 ballıq sistemlə qiymətləndirilir.</p>
+                </div>
+                <div class="timeline-step">
+                    <h3 style="font-size: 16px; color: white; margin-bottom: 8px;">4. Hesabat Təqdim Edilir</h3>
+                    <p class="muted" style="font-size: 14px;">Dərin maliyyə proqnozları və AI tövsiyələri ilə tam hesabat hazır olur.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="grid grid-3 gap-24" style="grid-template-columns: repeat(3, 1fr); margin-top: 60px;">
+            <div class="text-center">
+                <div style="width: 40px; height: 40px; background: var(--green-bg); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--green); margin: 0 auto 16px; font-weight: 700;">D</div>
+                <h4 style="font-size: 14px; margin-bottom: 8px;">Dəqiq Data</h4>
+                <p class="muted" style="font-size: 12px;">Hər gün yenilənən trafik və rəqabət məlumatları.</p>
+            </div>
+            <div class="text-center">
+                <div style="width: 40px; height: 40px; background: var(--green-bg); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--green); margin: 0 auto 16px; font-weight: 700;">S</div>
+                <h4 style="font-size: 14px; margin-bottom: 8px;">Sürət</h4>
+                <p class="muted" style="font-size: 12px;">Cəmi 30 saniyədə tam və dərin analiz.</p>
+            </div>
+            <div class="text-center">
+                <div style="width: 40px; height: 40px; background: var(--green-bg); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--green); margin: 0 auto 16px; font-weight: 700;">G</div>
+                <h4 style="font-size: 14px; margin-bottom: 8px;">Güvən</h4>
+                <p class="muted" style="font-size: 12px;">Doğruluğu təsdiqlənmiş alqoritmlər.</p>
+            </div>
+        </div>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script src="nav.js"></script>
+</body>
+</html>

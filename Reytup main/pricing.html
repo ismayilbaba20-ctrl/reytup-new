@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qiymətlər — ReytUp</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .pricing-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; max-width: 1200px; margin: 0 auto; }
+        .feature-list { margin: 24px 0; }
+        .feature-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; font-size: 13px; line-height: 1.4; }
+        .check { color: var(--green); font-weight: 700; flex-shrink: 0; }
+        .cross { color: var(--red); font-weight: 700; flex-shrink: 0; opacity: 0.6; }
+        
+        /* Accordion */
+        .faq-item { border-bottom: 1px solid var(--border); padding: 20px 0; cursor: pointer; }
+        .faq-question { display: flex; justify-content: space-between; align-items: center; font-weight: 500; }
+        .faq-answer { display: none; margin-top: 12px; color: var(--muted); font-size: 14px; line-height: 1.6; }
+        .faq-item.active .faq-answer { display: block; }
+        .faq-item.active svg { transform: rotate(180deg); }
+        .faq-question svg { transition: transform 0.3s; }
+
+        @media (max-width: 1024px) {
+            .pricing-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 640px) {
+            .pricing-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="nav-container"></div>
+
+    <main class="container" style="padding: 80px 24px;">
+        <!-- Urgency Banner -->
+        <div style="background: rgba(234,179,8,0.06); border: 1px solid rgba(234,179,8,0.2); border-radius: 10px; padding: 16px; text-align: center; margin-bottom: 48px;">
+            <div style="color: var(--yellow); font-weight: 600; margin-bottom: 4px;">⚡ Açılış təklifi — İlk 50 istifadəçiyə 30% endirim</div>
+            <div class="muted" style="font-size: 14px;">Qalan: <span style="color: white; font-weight: 600;">12 yer</span> • <span id="countdown">23:59:59</span></div>
+        </div>
+
+        <header class="text-center" style="margin-bottom: 60px;">
+            <div style="color: var(--green); font-size: 11px; letter-spacing: 0.15em; font-weight: 600; margin-bottom: 12px;">PLANLAR</div>
+            <h2 class="h2">Qiymətlər</h2>
+            <p class="muted">Biznesinizə uyğun planı seçin</p>
+        </header>
+
+        <div class="pricing-grid">
+            <!-- PULSUZ -->
+            <div class="card" style="display: flex; flex-direction: column; padding: 24px;">
+                <div>
+                    <div style="color: var(--muted); font-size: 11px; font-weight: 700; margin-bottom: 8px;">BAŞLAMAQ ÜÇÜN</div>
+                    <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 16px;">PULSUZ</h3>
+                    <div class="flex items-center" style="margin-bottom: 24px;">
+                        <span style="font-size: 32px; font-weight: 700; color: white;">0</span>
+                        <div style="margin-left: 8px;">
+                            <div style="font-weight: 600; font-size: 14px; line-height: 1;">AZN</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="height: 1px; background: var(--border); width: 100%;"></div>
+                <div class="feature-list">
+                    <div class="feature-item"><span class="check">✓</span> 1 ədəd tam analiz hüququ</div>
+                    <div class="feature-item"><span class="check">✓</span> Ümumi reytinq balı</div>
+                    <div class="feature-item"><span class="check">✓</span> Əsas rəqabət məlumatı</div>
+                    <div class="feature-item"><span class="check">✓</span> Əsas trafik məlumatı</div>
+                    <div class="feature-item"><span class="check">✓</span> 1 alternativ yer tövsiyəsi</div>
+                    <div class="feature-item"><span class="cross">✗</span> Hesabat PDF formatında</div>
+                    <div class="feature-item"><span class="cross">✗</span> AI izahatı yoxdur</div>
+                    <div class="feature-item"><span class="cross">✗</span> Tarixçə saxlanılmır</div>
+                </div>
+                <button class="btn btn-outline" style="width: 100%; border-color: var(--green); color: var(--green); margin-top: auto;">Pulsuz Başla</button>
+            </div>
+
+            <!-- BAŞLANĞIC -->
+            <div class="card" style="display: flex; flex-direction: column; padding: 24px;">
+                <div>
+                    <div style="color: var(--muted); font-size: 11px; font-weight: 700; margin-bottom: 8px;">CİDDİ QƏRAR ÜÇÜN</div>
+                    <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 16px;">BAŞLANĞIC</h3>
+                    <div class="flex items-center" style="margin-bottom: 24px;">
+                        <span style="font-size: 32px; font-weight: 700; color: white;">9</span>
+                        <div style="margin-left: 8px;">
+                            <div style="font-weight: 600; font-size: 14px; line-height: 1;">AZN</div>
+                            <div class="muted" style="font-size: 12px;">analiz</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="height: 1px; background: var(--border); width: 100%;"></div>
+                <div class="feature-list">
+                    <div class="feature-item"><span class="check">✓</span> Pulsuz plandakı hər şey</div>
+                    <div class="feature-item"><span class="check">✓</span> Detallı reytinq izahatı</div>
+                    <div class="feature-item"><span class="check">✓</span> Ətraflı rəqabət xəritəsi</div>
+                    <div class="feature-item"><span class="check">✓</span> Piyada trafik analizi</div>
+                    <div class="feature-item"><span class="check">✓</span> Ətraf mühit analizi</div>
+                    <div class="feature-item"><span class="check">✓</span> Maliyyə hesablaması</div>
+                    <div class="feature-item"><span class="check">✓</span> 3 alternativ yer tövsiyəsi</div>
+                    <div class="feature-item"><span class="check">✓</span> AI-ın ətraflı izahatı</div>
+                    <div class="feature-item"><span class="check">✓</span> PDF hesabat (yüklənən)</div>
+                    <div class="feature-item"><span class="check">✓</span> Nəticə 30 gün saxlanılır</div>
+                </div>
+                <button class="btn btn-outline" style="width: 100%; border-color: var(--green); color: var(--green); margin-top: auto;">Başla</button>
+            </div>
+
+            <!-- PEŞƏKAR -->
+            <div class="card" style="display: flex; flex-direction: column; padding: 24px; position: relative; border-color: var(--green);">
+                <div style="position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: var(--green-bg); color: var(--green); font-size: 11px; padding: 4px 14px; border-radius: 999px; font-weight: 700; border: 1px solid var(--green);">ƏN POPULYAR</div>
+                <div>
+                    <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 16px;">PEŞƏKAR</h3>
+                    <div class="flex items-center" style="margin-bottom: 24px;">
+                        <span style="font-size: 32px; font-weight: 700; color: white;">29</span>
+                        <div style="margin-left: 8px;">
+                            <div style="font-weight: 600; font-size: 14px; line-height: 1;">AZN</div>
+                            <div class="muted" style="font-size: 12px;">aylıq</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="height: 1px; background: var(--border); width: 100%;"></div>
+                <div class="feature-list">
+                    <div class="feature-item"><span class="check">✓</span> Başlanğıc plandakı hər şey</div>
+                    <div class="feature-item"><span class="check">✓</span> Limitsiz analiz</div>
+                    <div class="feature-item"><span class="check">✓</span> Prioritet AI analizi</div>
+                    <div class="feature-item"><span class="check">✓</span> Rəqiblərin detallı profili</div>
+                    <div class="feature-item"><span class="check">✓</span> Aylıq bazar hesabatı</div>
+                    <div class="feature-item"><span class="check">✓</span> API girişi</div>
+                    <div class="feature-item"><span class="check">✓</span> Prioritet dəstək</div>
+                </div>
+                <button class="btn btn-primary" style="width: 100%; margin-top: auto;">İndi Başla</button>
+            </div>
+
+            <!-- KORPORATİV -->
+            <div class="card" style="display: flex; flex-direction: column; padding: 24px;">
+                <div>
+                    <div style="color: var(--muted); font-size: 11px; font-weight: 700; margin-bottom: 8px;">ŞİRKƏTLƏR ÜÇÜN</div>
+                    <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 16px;">KORPORATİV</h3>
+                    <div class="flex items-center" style="margin-bottom: 24px;">
+                        <span style="font-size: 24px; font-weight: 700; color: white;">Əlaqə ilə</span>
+                    </div>
+                </div>
+                <div style="height: 1px; background: var(--border); width: 100%;"></div>
+                <div class="feature-list">
+                    <div class="feature-item"><span class="check">✓</span> Peşəkar plandakı hər şey</div>
+                    <div class="feature-item"><span class="check">✓</span> Xüsusi AI tövsiyələri</div>
+                    <div class="feature-item"><span class="check">✓</span> Komanda hesabları</div>
+                    <div class="feature-item"><span class="check">✓</span> CRM inteqrasiyası</div>
+                    <div class="feature-item"><span class="check">✓</span> Həsr edilmiş dəstək</div>
+                    <div class="feature-item"><span class="check">✓</span> Xüsusi hesabatlar</div>
+                </div>
+                <a href="contact.html" class="btn btn-outline" style="width: 100%; border-color: var(--green); color: var(--green); margin-top: auto;">Bizimlə Əlaqə</a>
+            </div>
+        </div>
+
+        <div class="text-center" style="margin-top: 60px;">
+            <div style="display: inline-block; border: 1px solid var(--border); border-radius: 10px; padding: 16px 32px;">
+                <span class="muted" style="font-size: 14px;">🛡️ 7 Günlük Geri Qaytarma Zəmanəti</span>
+            </div>
+            <div class="muted" style="margin-top: 24px; font-size: 13px;">
+                Ödəniş üsulları: VISA · MasterCard · Kapital Bank · ABB · PAŞA Bank
+            </div>
+        </div>
+
+        <!-- FAQ -->
+        <section style="max-width: 800px; margin: 80px auto 0;">
+            <h2 class="h2 text-center">Tez-tez verilən suallar</h2>
+            <div class="faq-container" style="margin-top: 40px;">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Analizlər nə qədər dəqiqdir?</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </div>
+                    <div class="faq-answer">
+                        ReytUp real OSM (OpenStreetMap) datası və rəsmi statistikalar əsasında analiz aparır. Gemini AI modelimiz bu datanı emal edərək 95% dəqiqliklə nəticələr təqdim edir.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Hansı şəhərləri əhatə edir?</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </div>
+                    <div class="faq-answer">
+                        Hazırda Bakı, Sumqayıt və Abşeron rayonlarını tam əhatə edirik. Tezliklə digər regionlar üçün də xidmətimiz aktiv olacaq.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Abunəliyi ləğv edə bilərəmmi?</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </div>
+                    <div class="faq-answer">
+                        Bəli, istənilən vaxt abunəliyi dayandıra bilərsiniz. Ödəniş dövrünün sonuna qədər xidmətdən yararlanmağa davam edəcəksiniz.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Hansı biznes növləri üçün işləyir?</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </div>
+                    <div class="faq-answer">
+                        Kofeshop, restoran, fast food, mağaza, gözəllik salonu, tibb mərkəzi və digər pərakəndə biznes növləri üçün optimallaşdırılıb.
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script src="nav.js"></script>
+    <script>
+        // Countdown JS
+        let time = 24 * 60 * 60 - 1; // 23:59:59
+        const countdownElem = document.getElementById('countdown');
+        
+        setInterval(() => {
+            const h = Math.floor(time / 3600);
+            const m = Math.floor((time % 3600) / 60);
+            const s = time % 60;
+            countdownElem.textContent = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+            time--;
+            if (time < 0) time = 0;
+        }, 1000);
+
+        // FAQ Toggle
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.addEventListener('click', () => {
+                item.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Məkan Analizi — ReytUp</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .form-group { margin-bottom: 24px; width: 100%; }
+        .form-label { display: block; color: var(--muted); font-size: 13px; margin-bottom: 8px; }
+        .form-input { 
+            width: 100%; background: var(--surface2); border: 1px solid var(--border); 
+            border-radius: 8px; height: 48px; color: white; padding: 0 16px; transition: var(--transition);
+        }
+        .form-input:focus { border-color: var(--green); outline: none; }
+        
+        /* Loading Styles */
+        #loading-state { display: none; margin-top: 32px; }
+        .step { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; font-size: 14px; opacity: 0.5; }
+        .step.active { opacity: 1; }
+        .step.completed { color: var(--green); opacity: 1; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); }
+        .step.active .dot { background: var(--green); animation: pulse 1.5s infinite; }
+        .step.completed .dot { background: var(--green); }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        #progress-bar-container { 
+            width: 100%; height: 4px; background: var(--surface2); border-radius: 2px; margin-top: 24px; overflow: hidden;
+        }
+        #progress-bar-fill { height: 100%; background: var(--green); width: 0%; transition: width 0.3s; }
+
+        /* Results Styles */
+        #results-container { display: none; margin-top: 40px; animation: fadeInUp 0.5s ease-out; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .score-circle {
+            position: relative; width: 120px; height: 120px; display: flex; align-items: center; justify-content: center;
+        }
+        .score-circle svg { transform: rotate(-90deg); }
+        .score-circle .bg { fill: none; stroke: var(--border); stroke-width: 8; }
+        .score-circle .progress { fill: none; stroke: var(--green); stroke-width: 8; stroke-linecap: round; transition: stroke-dashoffset 1s ease-out; }
+        .score-number { position: absolute; font-size: 32px; font-weight: 700; color: white; }
+
+        .breakdown-bar { height: 6px; background: var(--surface2); border-radius: 3px; position: relative; margin: 8px 0 16px; }
+        .breakdown-fill { height: 100%; background: var(--green); border-radius: 3px; position: absolute; left: 0; width: 0; transition: width 1s ease-out; }
+
+        .point-item { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-size: 14px; }
+        .point-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    </style>
+</head>
+<body>
+
+    <div id="nav-container"></div>
+
+    <main class="container" style="max-width: 640px; padding: 80px 24px;">
+        <div class="text-center" style="margin-bottom: 40px;">
+            <h1 style="font-size: 32px; font-weight: 700; margin-bottom: 8px;">Məkan Analizi</h1>
+            <p class="muted">Məlumatları daxil edin, AI qalanını edir</p>
+        </div>
+
+        <div id="live-counter" style="margin-bottom: 16px; font-size: 13px;">
+            <span style="color: var(--green); margin-right: 6px;">●</span> 
+            <span class="muted">Bu gün <span id="counter-val">23</span> analiz edildi</span>
+        </div>
+
+        <div class="card" id="form-card">
+            <form id="analyze-form">
+                <div class="form-group">
+                    <label class="form-label">Biznes Növü</label>
+                    <select class="form-input" id="business_type" required>
+                        <option value="" disabled selected>Biznes növünü seçin</option>
+                        <option value="Kofeshop">Kofeshop</option>
+                        <option value="Restoran">Restoran</option>
+                        <option value="Fast Food">Fast Food</option>
+                        <option value="Mağaza">Mağaza</option>
+                        <option value="Gözəllik Salonu">Gözəllik Salonu</option>
+                        <option value="Tibb Mərkəzi">Tibb Mərkəzi</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Obyektin Linki</label>
+                    <input type="url" class="form-input" id="obyekt_url" placeholder="https://kub.az/elanlar/... və ya bina.az linki" required>
+                    <div class="muted" style="font-size: 11px; margin-top: 8px;">kub.az, bina.az və ya tap.az linkini yapışdırın</div>
+                </div>
+
+                <div style="margin-bottom: 24px; color: var(--muted); font-size: 12px;">
+                    🔒 Məlumatlarınız şifrələnərək işlənir
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; height: 52px; font-size: 16px;">Analiz Et</button>
+            </form>
+
+            <!-- Loading State -->
+            <div id="loading-state">
+                <div class="step" id="step-1">
+                    <div class="dot"></div>
+                    <span>Məlumatlar qəbul edildi</span>
+                </div>
+                <div class="step" id="step-2">
+                    <div class="dot"></div>
+                    <span>AI analiz aparır...</span>
+                </div>
+                <div class="step" id="step-3">
+                    <div class="dot"></div>
+                    <span>Hesabat hazırlanır</span>
+                </div>
+                <div id="progress-bar-container">
+                    <div id="progress-bar-fill"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results -->
+        <div id="results-container">
+            <div class="flex justify-between" style="margin-bottom: 12px;">
+                 <span class="muted" id="result-id" style="font-size: 11px;">Analiz ID: #RU-8432</span>
+                 <span class="muted" id="result-date" style="font-size: 11px;">17.04.2026</span>
+            </div>
+
+            <div class="card" style="margin-bottom: 24px;">
+                <div class="flex items-center gap-24">
+                    <div class="score-circle">
+                        <svg width="120" height="120">
+                            <circle class="bg" cx="60" cy="60" r="54"></circle>
+                            <circle class="progress" id="score-ring" cx="60" cy="60" r="54" stroke-dasharray="339.29" stroke-dashoffset="339.29"></circle>
+                        </svg>
+                        <div class="score-number"><span id="score-val">0</span><span style="font-size: 14px; opacity: 0.5;">/100</span></div>
+                    </div>
+                    <div>
+                        <div id="verdict-badge" style="display: inline-block; padding: 8px 16px; border-radius: 8px; font-weight: 600; font-size: 14px; margin-bottom: 8px;">Tövsiyə edilir</div>
+                        <div class="muted" style="font-size: 12px;">Məlumat mənbəyi: Gemini AI</div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 32px;">
+                    <div class="muted" style="font-size: 11px; letter-spacing: 0.1em; font-weight: 700; margin-bottom: 16px;">XAL BÖLGÜSÜ</div>
+                    <div id="breakdown-list">
+                        <!-- Bars go here -->
+                        <div class="flex justify-between muted" style="font-size: 12px;"><span>Trafik</span> <span>/25</span></div>
+                        <div class="breakdown-bar"><div class="breakdown-fill" data-val="22" style="width: 0;"></div></div>
+                        
+                        <div class="flex justify-between muted" style="font-size: 12px;"><span>Rəqabət</span> <span>/20</span></div>
+                        <div class="breakdown-bar"><div class="breakdown-fill" data-val="18" style="width: 0;"></div></div>
+                        
+                        <div class="flex justify-between muted" style="font-size: 12px;"><span>Maliyyə</span> <span>/20</span></div>
+                        <div class="breakdown-bar"><div class="breakdown-fill" data-val="15" style="width: 0;"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid gap-24 flex-mobile-stack" style="grid-template-columns: 1fr 1fr; margin-bottom: 24px;">
+                <div class="card" style="padding: 24px;">
+                    <h4 style="font-size: 15px; margin-bottom: 16px;">Müsbət Tərəflər</h4>
+                    <div id="positives-list"></div>
+                </div>
+                <div class="card" style="padding: 24px;">
+                    <h4 style="font-size: 15px; margin-bottom: 16px;">Risklər</h4>
+                    <div id="negatives-list"></div>
+                </div>
+            </div>
+
+            <div class="grid gap-24 flex-mobile-stack" style="grid-template-columns: 1fr 1fr; margin-bottom: 24px;">
+                <div class="card text-center" style="padding: 20px;">
+                    <div class="muted" style="font-size: 12px; margin-bottom: 4px;">Break-even</div>
+                    <div style="font-size: 24px; font-weight: 700;" id="stat-breakeven">-- ay</div>
+                </div>
+                <div class="card text-center" style="padding: 20px;">
+                    <div class="muted" style="font-size: 12px; margin-bottom: 4px;">İcarə/Gəlir</div>
+                    <div style="font-size: 24px; font-weight: 700;" id="stat-ratio">--%</div>
+                </div>
+            </div>
+
+            <div class="card" style="border-left: 3px solid var(--green); padding: 20px; margin-bottom: 24px;">
+                <div style="color: var(--green); font-size: 10px; letter-spacing: 0.1em; font-weight: 700; margin-bottom: 8px;">TÖVSİYƏ OLUNAN ALTERNATİV</div>
+                <div style="font-weight: 600; font-size: 18px; margin-bottom: 4px;" id="alt-name">--</div>
+                <p class="muted" style="font-size: 14px;" id="alt-reason">--</p>
+            </div>
+
+            <div class="card" style="background: var(--surface); text-align: center; font-style: italic; font-size: 13px; color: var(--muted); margin-bottom: 32px;">
+                <p id="result-summary">--</p>
+            </div>
+
+            <button class="btn btn-outline" id="reset-btn" style="width: 100%; border-color: var(--green); color: var(--green);">Yeni Analiz</button>
+        </div>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script src="nav.js"></script>
+    <script>
+        // Live Counter logic
+        const counterVal = document.getElementById('counter-val');
+        let count = 23;
+        setInterval(() => {
+            count += Math.floor(Math.random() * 3) - 1;
+            if (count < 18) count = 18;
+            if (count > 35) count = 35;
+            counterVal.textContent = count;
+        }, 30000);
+
+        const form = document.getElementById('analyze-form');
+        const formCard = document.getElementById('form-card');
+        const loadingState = document.getElementById('loading-state');
+        const resultsContainer = document.getElementById('results-container');
+        const progressBar = document.getElementById('progress-bar-fill');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Collect data
+            const formData = {
+                url: document.getElementById('obyekt_url').value,
+                business_type: document.getElementById('business_type').value
+            };
+
+            // Switch UI to loading
+            form.style.display = 'none';
+            loadingState.style.display = 'block';
+
+            try {
+                // Step-by-step loading animation
+                updateLoading(1, 10);
+                
+                // Start API Call immediately while animating steps
+                const apiPromise = fetch('https://shakarzade.app.n8n.cloud/webhook/analyze', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                await delay(2000);
+                updateLoading(2, 40);
+                
+                await delay(3000);
+                updateLoading(3, 70);
+
+                const response = await apiPromise;
+                const data = await response.json();
+                
+                updateLoading(4, 100);
+                await delay(500);
+
+                renderResults(data);
+            } catch (err) {
+                console.error(err);
+                alert('Xəta baş verdi. Zəhmət olmasa yenidən yoxlayın.');
+                location.reload();
+            }
+        });
+
+        function updateLoading(step, progress) {
+            progressBar.style.width = progress + '%';
+            if (step > 0) {
+                const prev = document.getElementById(`step-${step-1}`);
+                if (prev) prev.classList.add('completed');
+                const curr = document.getElementById(`step-${step}`);
+                if (curr) curr.classList.add('active');
+            }
+        }
+
+        function delay(ms) { return new Promise(res => setTimeout(res, ms)); }
+
+        function renderResults(data) {
+            loadingState.style.display = 'none';
+            formCard.style.display = 'none';
+            resultsContainer.style.display = 'block';
+
+            // Set Meta
+            document.getElementById('result-id').textContent = 'Analiz ID: #RU-' + Math.floor(1000 + Math.random() * 9000);
+            document.getElementById('result-date').textContent = new Date().toLocaleDateString('az-AZ');
+
+            // Score animation
+            const score = data.score || 85;
+            const scoreVal = document.getElementById('score-val');
+            const ring = document.getElementById('score-ring');
+            const circumference = 339.29;
+            
+            let current = 0;
+            const interval = setInterval(() => {
+                if (current >= score) {
+                    clearInterval(interval);
+                } else {
+                    current++;
+                    scoreVal.textContent = current;
+                    const offset = circumference - (current / 100) * circumference;
+                    ring.style.strokeDashoffset = offset;
+                }
+            }, 20);
+
+            // Verdict badge color
+            const badge = document.getElementById('verdict-badge');
+            if (score >= 80) {
+                badge.textContent = 'Tövsiyə edilir';
+                badge.style.background = 'var(--green-bg)';
+                badge.style.color = 'var(--green)';
+                ring.style.stroke = 'var(--green)';
+            } else if (score >= 60) {
+                badge.textContent = 'Risklidir';
+                badge.style.background = 'rgba(234,179,8,0.1)';
+                badge.style.color = 'var(--yellow)';
+                ring.style.stroke = 'var(--yellow)';
+            } else {
+                badge.textContent = 'Tövsiyə edilmir';
+                badge.style.background = 'var(--red-bg)';
+                badge.style.color = 'var(--red)';
+                ring.style.stroke = 'var(--red)';
+            }
+
+            // Breakdown bars
+            const bars = document.querySelectorAll('.breakdown-fill');
+            setTimeout(() => {
+                bars.forEach((bar, i) => {
+                    // Logic for breakdown values from data or mock
+                    const vals = [data.traffic_score || 20, data.competition_score || 18, data.finance_score || 15];
+                    const maxs = [25, 20, 20];
+                    bar.style.width = (vals[i] / maxs[i] * 100) + '%';
+                });
+            }, 100);
+
+            // Lists
+            const posList = document.getElementById('positives-list');
+            const negList = document.getElementById('negatives-list');
+            
+            (data.positives || ["Yüksək piyada trafiki", "Rəqabət azlığı", "Görünürlük yaxşı"]).forEach(text => {
+                posList.innerHTML += `<div class="point-item"><div class="point-dot" style="background: var(--green);"></div><span>${text}</span></div>`;
+            });
+            
+            (data.negatives || ["Yüksək icarə haqqı", "Parkinq problemi"]).forEach(text => {
+                negList.innerHTML += `<div class="point-item"><div class="point-dot" style="background: var(--red);"></div><span>${text}</span></div>`;
+            });
+
+            // Stats
+            document.getElementById('stat-breakeven').textContent = (data.breakeven_months || 14) + ' ay';
+            document.getElementById('stat-ratio').textContent = (data.rent_income_ratio || 18) + '%';
+
+            // Alternative
+            document.getElementById('alt-name').textContent = data.alternative_location || "Nəsimi r., 28 May m/s yaxınlığı";
+            document.getElementById('alt-reason').textContent = data.alternative_reason || "Bu biznes növü üçün daha yüksək müştəri sıxlığı olan ərazidir.";
+            
+            // Summary
+            document.getElementById('result-summary').textContent = data.summary || "Bu məkan ümumilikdə biznesiniz üçün uyğundur, lakin maliyyə risklərinə diqqət yetirilməlidir.";
+        }
+
+        document.getElementById('reset-btn').addEventListener('click', () => {
+            resultsContainer.style.display = 'none';
+            formCard.style.display = 'block';
+            form.style.display = 'block';
+            form.reset();
+            // Clear lists
+            document.getElementById('positives-list').innerHTML = '';
+            document.getElementById('negatives-list').innerHTML = '';
+            // Reset Progress
+            progressBar.style.width = '0%';
+            document.querySelectorAll('.step').forEach(s => s.className = 'step');
+        });
+    </script>
+</body>
+</html>

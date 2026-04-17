@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Əlaqə — ReytUp</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .contact-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 48px; max-width: 960px; margin: 0 auto; }
+        .contact-info-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 16px; transition: var(--transition); }
+        .contact-info-card:hover { border-color: var(--green); }
+        .form-label { display: block; color: var(--muted); font-size: 13px; margin-bottom: 8px; }
+        .form-input { 
+            width: 100%; background: var(--surface2); border: 1px solid var(--border); 
+            border-radius: 8px; padding: 12px 16px; color: white; transition: var(--transition); margin-bottom: 20px;
+        }
+        .form-input:focus { border-color: var(--green); outline: none; }
+        textarea.form-input { height: 120px; resize: none; }
+        
+        #success-msg { display: none; background: var(--green-bg); color: var(--green); border: 1px solid var(--green); border-radius: 12px; padding: 32px; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <div id="nav-container"></div>
+
+    <main class="container" style="padding: 80px 24px;">
+        <div class="contact-grid flex-mobile-stack">
+            <!-- Left: Info -->
+            <div>
+                <h2 class="h2">Bizimlə əlaqə saxlayın</h2>
+                <p class="muted" style="margin-bottom: 32px;">Haqqımızda suallarınız var? Komandamız sizə kömək etməyə hazırdır.</p>
+                
+                <div class="contact-info-card">
+                    <div style="color: var(--muted); font-size: 11px; margin-bottom: 4px;">E-POÇT</div>
+                    <div style="font-weight: 500;">info@reytup.az</div>
+                </div>
+                
+                <div class="contact-info-card">
+                    <div style="color: var(--muted); font-size: 11px; margin-bottom: 4px;">TELEFON</div>
+                    <div style="font-weight: 500;">+994 12 555 00 11</div>
+                </div>
+                
+                <div class="contact-info-card">
+                    <div style="color: var(--muted); font-size: 11px; margin-bottom: 4px;">ÜNVAN</div>
+                    <div style="font-weight: 500;">Bakı şəhəri, AZ1000</div>
+                </div>
+            </div>
+
+            <!-- Right: Form -->
+            <div class="card" id="form-card">
+                <form id="contact-form">
+                    <div class="grid grid-2 gap-16" style="grid-template-columns: 1fr 1fr;">
+                        <div>
+                            <label class="form-label">Ad Soyad</label>
+                            <input type="text" class="form-input" placeholder="Rauf Məmmədov" required>
+                        </div>
+                        <div>
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-input" placeholder="rauf@example.com" required>
+                        </div>
+                    </div>
+                    
+                    <label class="form-label">Mövzu</label>
+                    <select class="form-input" required>
+                        <option value="" disabled selected>Mövzunu seçin</option>
+                        <option value="Destek">Texniki Dəstək</option>
+                        <option value="Satis">Satış və Qiymətlər</option>
+                        <option value="Emekdashliq">Əməkdaşlıq</option>
+                        <option value="Diger">Digər</option>
+                    </select>
+                    
+                    <label class="form-label">Mesaj</label>
+                    <textarea class="form-input" placeholder="Mesajınızı daxil edin..."></textarea>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%; height: 50px;">Mesajı Göndər</button>
+                </form>
+
+                <div id="success-msg">
+                    <div style="font-size: 32px; margin-bottom: 16px;">✉️</div>
+                    <h3 style="margin-bottom: 8px;">Mesajınız göndərildi!</h3>
+                    <p style="font-size: 14px; opacity: 0.8;">Qısa zamanda sizinlə əlaqə saxlayacağıq.</p>
+                    <button class="btn btn-outline" style="margin-top: 24px; border-color: var(--green); color: var(--green);" onclick="location.reload()">Yeni Mesaj</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script src="nav.js"></script>
+    <script>
+        document.getElementById('contact-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            document.getElementById('contact-form').style.display = 'none';
+            document.getElementById('success-msg').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
