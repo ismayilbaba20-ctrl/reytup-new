@@ -23,9 +23,10 @@
   --bg: #f8f9fa;
   --surface: #ffffff;
   --surface2: #f1f3f5;
-  --border: #e2e8f0;
-  --text: #0d1117;
-  --muted: #64748b;
+  --border: #d1d5db;
+  --text: #0f172a;
+  --muted: #475569;
+  --nav-text: #0f172a;
 }
 
 /* Reset & Base Styles */
@@ -90,6 +91,7 @@ section {
 .grid { display: grid; }
 .items-center { align-items: center; }
 .justify-between { justify-content: space-between; }
+.justify-center { justify-content: center; }
 .text-center { text-align: center; }
 
 /* Typography Utility */
@@ -130,6 +132,10 @@ section {
 .btn-primary {
   background: var(--green);
   color: #fff;
+}
+[data-theme="light"] .btn-primary {
+  background: var(--green-dark);
+  color: #ffffff;
 }
 .btn-primary:hover {
   background: var(--green-dark);
@@ -216,10 +222,22 @@ section {
 @media (max-width: 768px) {
   .h1 { font-size: 42px; }
   .h2 { font-size: 30px; }
-  .flex-mobile-stack { flex-direction: column; }
+  .flex-mobile-stack { 
+    flex-direction: column;
+    align-items: center !important;
+    justify-content: center !important;
+  }
   .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
   .navbar-links { display: none; }
-  .hero-buttons { flex-direction: column; }
+  .hero-buttons { 
+    flex-direction: column;
+    align-items: center !important;
+  }
+  .hero-buttons a {
+    width: 100%;
+    max-width: 280px;
+    text-align: center;
+  }
   section { padding: 60px 0; }
 }
 
